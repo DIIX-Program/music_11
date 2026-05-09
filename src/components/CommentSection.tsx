@@ -29,8 +29,9 @@ export function CommentSection({ trackId }: CommentSectionProps) {
     queryKey: ["comments", trackId],
     queryFn: async () => {
       const res = await fetch(`/api/comments/${trackId}`);
+      if (!res.ok) throw new Error("Không thể tải bình luận");
       const json = await res.json();
-      if (!json.success) throw new Error(json.error);
+      if (!json.success) throw new Error(json.error || "Lỗi không xác định");
       return json.data;
     },
     enabled: !!trackId,
@@ -43,8 +44,11 @@ export function CommentSection({ trackId }: CommentSectionProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: text }),
       });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error || "Lỗi khi gửi bình luận");
+      }
       const json = await res.json();
-      if (!json.success) throw new Error(json.error);
       return json.data;
     },
     onSuccess: (newComment) => {

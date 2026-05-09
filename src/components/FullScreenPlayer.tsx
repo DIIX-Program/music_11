@@ -48,11 +48,12 @@ export function FullScreenPlayer({
     setLoadingComments(true);
     try {
       const res = await fetch(`/api/comments/${currentTrack.id}`);
+      if (!res.ok) throw new Error("Không thể tải bình luận");
       const data = await res.json();
       if (data.success) {
         setComments(data.data || []);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Fetch comments failed:", err);
     } finally {
       setLoadingComments(false);
@@ -73,6 +74,7 @@ export function FullScreenPlayer({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: newComment.trim() })
       });
+      
       const data = await res.json();
       if (data.success) {
         setComments([data.data, ...comments]);
@@ -82,7 +84,7 @@ export function FullScreenPlayer({
         addToast(data.error || "Lỗi khi gửi bình luận", "error");
       }
     } catch (err) {
-      addToast("Kết nối thất bại", "error");
+      addToast("Kết nối thất bại. Vui lòng thử lại.", "error");
     }
   };
 

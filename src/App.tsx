@@ -44,12 +44,12 @@ function AppLayout() {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setAuth(data.userId, data.isAdmin);
+          setAuth(data.userId, data.isAdmin, data.isArtist);
         } else {
-          setAuth(null, false);
+          setAuth(null, false, false);
         }
       })
-      .catch(() => setAuth(null, false))
+      .catch(() => setAuth(null, false, false))
       .finally(() => setIsInitialLoading(false));
   }, [setAuth]);
 

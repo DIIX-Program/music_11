@@ -43,10 +43,10 @@ export async function getConnection(): Promise<mssql.ConnectionPool> {
     }
 
     pool = await new mssql.ConnectionPool(config).connect();
-    console.log('✅ Connected to SQL Server Pool');
+    console.log('Connected to SQL Server Pool');
     return pool;
   } catch (err) {
-    console.error('❌ SQL Server connection error:', err);
+    console.error(' SQL Server connection error:', err);
     // In production, you might want to alert here
     throw err;
   }

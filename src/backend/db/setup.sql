@@ -139,7 +139,7 @@ BEGIN
       user_id VARCHAR(50) NOT NULL,
       track_id VARCHAR(50) NOT NULL,
       content NVARCHAR(MAX) NOT NULL,
-      status VARCHAR(16) NOT NULL DEFAULT 'PENDING', -- Moderation Status
+      status VARCHAR(16) NOT NULL DEFAULT 'APPROVED', -- Moderation Status
       created_at DATETIME DEFAULT GETDATE(),
       CONSTRAINT FK_Comments_Users FOREIGN KEY (user_id) REFERENCES users(id),
       CONSTRAINT FK_Comments_Tracks FOREIGN KEY (track_id) REFERENCES tracks(id)

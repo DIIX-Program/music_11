@@ -346,5 +346,16 @@ export const trackRepository = {
         ORDER BY t.created_at DESC
       `);
     return result.recordset as Track[];
+  },
+
+  /**
+   * Increment comments count for a track
+   */
+  incrementCommentsCount: async (id: string, transaction?: mssql.Transaction): Promise<void> => {
+    const pool = await getConnection();
+    const request = transaction ? new mssql.Request(transaction) : pool.request();
+    await request
+      .input('id', mssql.VarChar, id)
+      .query("UPDATE tracks SET comments_count = comments_count + 1 WHERE id = @id");
   }
 };

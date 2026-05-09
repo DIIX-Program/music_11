@@ -7,14 +7,14 @@ import { getConnection } from "../config/db.js";
  */
 export async function initDb() {
   try {
-    console.log('🔄 Initializing SQL Server Connection...');
+    console.log(' Initializing SQL Server Connection...');
     const pool = await getConnection();
     
     // In a production environment, you might run migrations here.
     // For this project, please ensure you have run the DDL script:
     // src/backend/db/setup.sql
     
-    console.log('✅ SQL Server Ready');
+    console.log(' SQL Server Ready');
   } catch (err) {
     console.error('❌ Failed to initialize SQL Server:', err);
     // Depending on your strategy, you might want the app to exit here

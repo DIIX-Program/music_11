@@ -15,16 +15,26 @@ export interface Comment {
  */
 export const commentRepository = {
   create: async (comment: Omit<Comment, "created_at" | "status">): Promise<void> => {
+    const { trackRepository } = await import("./trackRepository.js");
+    const pool = await getConnection();
+    const transaction = new mssql.Transaction(pool);
+
     try {
-      const pool = await getConnection();
-      await pool.request()
+      await transaction.begin();
+
+      await new mssql.Request(transaction)
         .input('id', mssql.VarChar, comment.id)
         .input('userId', mssql.VarChar, comment.user_id)
         .input('trackId', mssql.VarChar, comment.track_id)
         .input('content', mssql.NVarChar, comment.content)
         .input('status', mssql.VarChar, 'APPROVED') // Default to APPROVED for instant UX
         .query("INSERT INTO comments (id, user_id, track_id, content, status) VALUES (@id, @userId, @trackId, @content, @status)");
+
+      await trackRepository.incrementCommentsCount(comment.track_id, transaction);
+
+      await transaction.commit();
     } catch (error) {
+      await transaction.rollback();
       console.error('Error in commentRepository.create:', error);
       throw error;
     }

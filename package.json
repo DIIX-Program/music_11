@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx server.ts",
     "seed": "tsx src/backend/db/seed.ts",
+    "scan-local": "tsx src/backend/scripts/scan_local.ts",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",

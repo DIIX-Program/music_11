@@ -7,7 +7,7 @@ import { getConnection } from '../config/db.js';
 
 dotenv.config();
 
-const MUSIC_DIR = 'd:/Project/Music_11/nhac';
+const MUSIC_DIR = path.join(process.cwd(), 'nhac');
 const ADMIN_ID = 'user_admin_001';
 
 async function scan() {
